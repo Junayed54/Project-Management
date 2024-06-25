@@ -2,6 +2,8 @@ from rest_framework import serializers
 from .models import Comment
 
 class CommentSerializer(serializers.ModelSerializer):
+    assigned_to = serializers.ReadOnlyField(source='task.assigned_to.username')
+
     class Meta:
         model = Comment
-        fields = ['id', 'content', 'user', 'task', 'created_at']
+        fields = '__all__'

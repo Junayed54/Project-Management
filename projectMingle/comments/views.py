@@ -1,11 +1,13 @@
-from rest_framework import generics, permissions
-from .models import Comment, Task
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from .models import Comment
 from .serializers import CommentSerializer
-from django.shortcuts import get_object_or_404
+from projects.permissions import IsOwnerOrReadOnly
+from tasks.models import Task  # Assuming Task model location
 
 class CommentListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         task_id = self.kwargs['task_id']
@@ -19,4 +21,4 @@ class CommentListCreateAPIView(generics.ListCreateAPIView):
 class CommentRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]

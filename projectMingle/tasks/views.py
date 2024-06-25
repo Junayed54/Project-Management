@@ -1,11 +1,13 @@
-from rest_framework import generics, permissions
-from .models import Task, Project
+from rest_framework import generics
+from rest_framework.permissions import IsAuthenticated
+from .models import Task
 from .serializers import TaskSerializer
-from django.shortcuts import get_object_or_404
+from projects.permissions import IsOwnerOrReadOnly
+from projects.models import Project  # Assuming Project model location
 
 class TaskListCreateAPIView(generics.ListCreateAPIView):
     serializer_class = TaskSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         project_id = self.kwargs['project_id']
@@ -19,4 +21,4 @@ class TaskListCreateAPIView(generics.ListCreateAPIView):
 class TaskRetrieveUpdateDestroyAPIView(generics.RetrieveUpdateDestroyAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [IsAuthenticated, IsOwnerOrReadOnly]
