@@ -22,5 +22,5 @@ urlpatterns = [
     path('api/users/', include('users.urls')),
     path('api/projects/', include('projects.urls')),
     path('api/tasks/', include('tasks.urls')),
-    path('api/comments', include('comments.urls')),
+    path('api/comments/', include('comments.urls')),
 ]
